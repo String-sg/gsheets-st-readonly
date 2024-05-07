@@ -1,7 +1,7 @@
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import json  # Add this import at the top
+import json  
 
 def authenticate_gsheets():
     creds_json = st.secrets["gspread"]["google_credentials"]
@@ -10,26 +10,24 @@ def authenticate_gsheets():
     client = gspread.authorize(creds)
     return client
 
-# Fetch order items by email
 def get_order_items_by_email(email, sheet):
-    worksheet = sheet.worksheet('Sheet1') 
+    worksheet = sheet.worksheet('Sheet1')
     records = worksheet.get_all_records()
     
     for record in records:
         if record['Email'] == email:
-            return record['Order items']
-    return "No record found for this email."
+            return record['Order items'].replace('\\n', '\n')  
+    return "No record found for this email. Please try another email"
 
 # Initialize Google Sheets client
 client = authenticate_gsheets()
-sheet = client.open('SST String Session Checker') 
+sheet = client.open('Tech Summit@SST Lab School 2024 Workshop Checker') 
 
-# Streamlit interface
 def main():
     st.title('SST Lab School Session Checker')
-    email_input = st.text_input("Enter Email:", "")
+    email_input = st.text_input("Enter Email", "")
 
-    if st.button("Get Order Items"):
+    if st.button("Check workshop venues"):
         order_items = get_order_items_by_email(email_input, sheet)
         if order_items:
             st.success(order_items)
@@ -38,3 +36,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    st.markdown(' Back to [SST Help](https://go.gov.sg/sstlab) | Created by [String](https://go.gov.sg/stringme), code for this checker available [here](https://github.com/String-sg/gsheets-st-readonly)')
+
