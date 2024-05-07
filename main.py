@@ -21,10 +21,10 @@ def get_order_items_by_email(email, sheet):
 
 # Initialize Google Sheets client
 client = authenticate_gsheets()
-sheet = client.open('Tech Summit@SST Lab School 2024 Workshop Checker') 
+sheet = client.open('SST String Session Checker') 
 
 def main():
-    st.title('SST Lab School Session Checker')
+    st.title('Tech Summit@SST Lab School 2024 Workshop Checker')
     email_input = st.text_input("Enter Email", "")
 
     if st.button("Check workshop venues"):
