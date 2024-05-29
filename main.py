@@ -56,15 +56,16 @@ client = authenticate_gsheets()
 sheet = client.open('SST String Session Checker')
 
 def main():
-    branding.display_branding()  # Display branding
+    branding.display_branding()
     email_input = st.text_input("Enter Email", "")
 
     if st.button("Check workshop venues"):
         order_items = get_order_items_by_email(email_input, sheet)
         if order_items:
-            st.markdown(f"<div style='color: green;'>{order_items.replace('\n', '<br>')}</div>", unsafe_allow_html=True)
+            st.success(order_items)
         else:
             st.error("No items found for this email.")
+
 if __name__ == "__main__":
     main()
     st.markdown('')
