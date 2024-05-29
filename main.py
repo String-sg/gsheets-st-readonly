@@ -55,5 +55,16 @@ def main():
     inject_ga()
 
 if __name__ == "__main__":
+    inject_ga() 
     main()
     st.markdown('Created by [String](https://go.gov.sg/stringme), code for this checker available [here](https://github.com/String-sg/gsheets-st-readonly)')
+
+# hide hamburg
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
