@@ -2,10 +2,15 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+<<<<<<< Updated upstream
 from bs4 import BeautifulSoup
 import pathlib
 import shutil
 import branding  # Import the branding module
+=======
+import branding
+import streamlit.components.v1 as components
+>>>>>>> Stashed changes
 
 # Google Analytics configuration
 GA_ID = "google_analytics"
@@ -21,6 +26,7 @@ GA_SCRIPT = """
 """
 
 def inject_ga():
+<<<<<<< Updated upstream
     index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
     soup = BeautifulSoup(index_path.read_text(), features="html.parser")
     if not soup.find(id=GA_ID):
@@ -35,6 +41,19 @@ def inject_ga():
 
 inject_ga()
 
+=======
+    GA_SCRIPT = """
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKH2RC8PJ5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DKH2RC8PJ5');
+    </script>
+    """
+    components.html(GA_SCRIPT, height=0)
+>>>>>>> Stashed changes
 def authenticate_gsheets():
     creds_json = st.secrets["gspread"]["google_credentials"]
     scope = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
@@ -65,8 +84,23 @@ def main():
             st.success(order_items)
         else:
             st.error("No items found for this email.")
+<<<<<<< Updated upstream
+=======
+    inject_ga()  # Ensure this is called here to inject GA script
+>>>>>>> Stashed changes
 
 if __name__ == "__main__":
+    inject_ga()  # Also call it here to ensure it's injected on load
     main()
     st.markdown('')
     st.markdown('Created by [String](https://go.gov.sg/stringme), code for this checker available [here](https://github.com/String-sg/gsheets-st-readonly)')
+
+# hide hamburg
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
