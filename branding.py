@@ -41,3 +41,4 @@ def display_branding():
         </div>
         """, unsafe_allow_html=True
     )
+    st.markdown('')

@@ -5,23 +5,35 @@ import json
 from bs4 import BeautifulSoup
 import pathlib
 import shutil
-import branding
-import streamlit.components.v1 as components
+import branding  # Import the branding module
 
 # Google Analytics configuration
+GA_ID = "google_analytics"
+GA_SCRIPT = """
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DKH2RC8PJ5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DKH2RC8PJ5');
+</script>
+"""
 
 def inject_ga():
-    GA_SCRIPT = """
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKH2RC8PJ5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-DKH2RC8PJ5');
-    </script>
-    """
-    components.html(GA_SCRIPT)
+    index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
+    soup = BeautifulSoup(index_path.read_text(), features="html.parser")
+    if not soup.find(id=GA_ID):
+        bck_index = index_path.with_suffix('.bck')
+        if bck_index.exists():
+            shutil.copy(bck_index, index_path)
+        else:
+            shutil.copy(index_path, bck_index)
+        html = str(soup)
+        new_html = html.replace('<head>', '<head>\n' + GA_SCRIPT)
+        index_path.write_text(new_html)
+
+inject_ga()
 
 def authenticate_gsheets():
     creds_json = st.secrets["gspread"]["google_credentials"]
@@ -46,17 +58,18 @@ sheet = client.open('SST String Session Checker')
 def main():
     branding.display_branding()
     email_input = st.text_input("Enter Email", "")
+
     if st.button("Check workshop venues"):
         order_items = get_order_items_by_email(email_input, sheet)
         if order_items:
             st.success(order_items)
         else:
             st.error("No items found for this email.")
-    inject_ga()
 
 if __name__ == "__main__":
     inject_ga() 
     main()
+    st.markdown('')
     st.markdown('Created by [String](https://go.gov.sg/stringme), code for this checker available [here](https://github.com/String-sg/gsheets-st-readonly)')
 
 # hide hamburg
