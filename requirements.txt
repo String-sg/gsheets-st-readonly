@@ -1,5 +1,5 @@
 gspread
 oauth2client
-BeautifulSoup
+beautifulsoup4
 shutil
 bs4
