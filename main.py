@@ -5,7 +5,6 @@ import json
 import branding  # Import the branding module
 import requests
 
-
 def authenticate_gsheets():
     creds_json = st.secrets["gspread"]["google_credentials"]
     scope = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
@@ -37,7 +36,7 @@ def main():
             url_map4 = "https://drive.google.com/uc?export=view&id=1WNssG5UmA0KFjq7t38TXwK9ZWd2RWHSA"
             response_map4 = requests.get(url_map4)
             st.image(response_map4.content)
-            url_map3 = "https://drive.google.com/uc?export=view&id=1Dxyaz9XYCC1vv86uLTTOujRqws7u51L"
+            url_map3 = "https://drive.google.com/uc?export=view&id=1Dxyaz9XYCC1vv86uLTTOujRqws7u51L7"
             response_map3 = requests.get(url_map3)
             st.image(response_map3.content)
         else:
