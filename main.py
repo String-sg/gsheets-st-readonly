@@ -3,7 +3,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import branding  # Import the branding module
-
+import requests
 
 def authenticate_gsheets():
     creds_json = st.secrets["gspread"]["google_credentials"]
@@ -33,6 +33,12 @@ def main():
         order_items = get_order_items_by_email(email_input, sheet)
         if order_items:
             st.success(order_items)
+            url_map4 = "https://drive.google.com/uc?export=view&id=1WNssG5UmA0KFjq7t38TXwK9ZWd2RWHSA"
+            response_map4 = requests.get(url_map4)
+            st.image(response_map4.content)
+            url_map3 = "https://drive.google.com/uc?export=view&id=1Dxyaz9XYCC1vv86uLTTOujRqws7u51L7"
+            response_map3 = requests.get(url_map3)
+            st.image(response_map3.content)
         else:
             st.error("No items found for this email.")
 
